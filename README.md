@@ -1,3 +1,11 @@
+## Forked Version of Ark for Experimenting
+Important knowledge can be learned from identifying the annotators. This experiment uses cyclic training to merge data from different annotators. For the VinDr-CXR datasets specifically.
+
+## Changes
+* Data - Added 17 subsets derived from VinDr-CXR, separated by annotator ID.
+* Pretraining - cyclicly pretrains on the 17 annotator subsets, using only 1 task head.
+* Finetuning - additionally finetunes the 17 subsets on top of the Ark+ pretrained weights, retrieving and using the same VinDr task head.
+
 <p align="center"><img width=15% alt="FrontCover" src="Ark_MICCAI2023/media/Ark_logo.png"></p>
 
 # Foundation Ark: Accruing and Reusing Knowledge
