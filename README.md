@@ -1,4 +1,4 @@
-## Forked Version of Ark for Experimenting
+## Forked Version of Ark Plus for Experimenting
 Important knowledge can be learned from identifying the annotators. This experiment uses cyclic training to merge data from different annotators. For the VinDr-CXR datasets specifically.
 
 ## Changes
