@@ -372,6 +372,88 @@ class VinDrCXR(Dataset):
 
     return len(self.img_list)
 
+#---3 rows VinDrCXR ---
+class VinDrCXR_row1(VinDrCXR):
+    def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+        super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_row2(VinDrCXR):
+    def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+        super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_row3(VinDrCXR):
+    def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+        super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+#--- 17 radiologists VinDrCXR ---
+class VinDrCXR_rad1(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad2(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad3(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad4(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad5(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad6(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad7(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad8(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad9(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad10(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad11(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad12(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad13(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad14(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad15(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad16(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
+class VinDrCXR_rad17(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+
 # ---------------------------------------------Downstream RSNA Pneumonia------------------------------------------
 class RSNAPneumonia(Dataset):
 
@@ -599,11 +681,31 @@ class COVIDx(Dataset):
 
 
 dict_dataloarder = {
-    "ChestXray14": ChestXray14,
-    "CheXpert": CheXpert,
-    "Shenzhen": ShenzhenCXR,
-    "VinDrCXR": VinDrCXR,
-    "RSNAPneumonia": RSNAPneumonia,
-    "MIMIC": MIMIC,
-    "COVIDx": COVIDx
+  "ChestXray14": ChestXray14,
+  "CheXpert": CheXpert,
+  "Shenzhen": ShenzhenCXR,
+  "VinDrCXR": VinDrCXR,
+  "RSNAPneumonia": RSNAPneumonia,
+  "MIMIC": MIMIC,
+  "COVIDx": COVIDx,
+  "VinDrCXR_row1": VinDrCXR_row1,
+  "VinDrCXR_row2": VinDrCXR_row2,
+  "VinDrCXR_row3": VinDrCXR_row3,
+  "VinDrCXR_rad1": VinDrCXR_rad1,
+  "VinDrCXR_rad2": VinDrCXR_rad2,
+  "VinDrCXR_rad3": VinDrCXR_rad3,
+  "VinDrCXR_rad4": VinDrCXR_rad4,
+  "VinDrCXR_rad5": VinDrCXR_rad5,
+  "VinDrCXR_rad6": VinDrCXR_rad6,
+  "VinDrCXR_rad7": VinDrCXR_rad7,
+  "VinDrCXR_rad8": VinDrCXR_rad8,
+  "VinDrCXR_rad9": VinDrCXR_rad9,
+  "VinDrCXR_rad10": VinDrCXR_rad10,
+  "VinDrCXR_rad11": VinDrCXR_rad11,
+  "VinDrCXR_rad12": VinDrCXR_rad12,
+  "VinDrCXR_rad13": VinDrCXR_rad13,
+  "VinDrCXR_rad14": VinDrCXR_rad14,
+  "VinDrCXR_rad15": VinDrCXR_rad15,
+  "VinDrCXR_rad16": VinDrCXR_rad16,
+  "VinDrCXR_rad17": VinDrCXR_rad17
 }

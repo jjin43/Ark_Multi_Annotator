@@ -37,9 +37,9 @@ def omni_engine(args, model_path, output_path, dataset_list, datasets_config, da
     cudnn.benchmark = True
 
     # logs
-    exp = 'Ark_Plus'
-    for dataset in dataset_list:
-        exp += '_' + dataset 
+    exp = 'Ark_Plus' + args.exp_name
+    # for dataset in dataset_list:
+    #     exp += '_' + dataset 
     model_path = os.path.join(model_path, exp)
     model_path = os.path.join(model_path, args.exp_name)
     if not os.path.exists(model_path):
@@ -49,7 +49,7 @@ def omni_engine(args, model_path, output_path, dataset_list, datasets_config, da
         os.makedirs(output_path)
 
     log_file = os.path.join(model_path, "train.log")
-    output_file = os.path.join(output_path, exp+"_"+args.exp_name+"_results.txt")
+    output_file = os.path.join(output_path, exp+"_results.txt")
 
     # dataloaders for pretraining
     data_loader_list_train = []

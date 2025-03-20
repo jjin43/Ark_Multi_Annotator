@@ -57,8 +57,9 @@ def train_one_epoch(model, use_head_n, dataset, data_loader_train, device, crite
         ema_update_teacher(model, teacher, momentum_schedule, it)
         it += 1
     
-    wandb.log({"train_loss_cls_{}".format(dataset): losses_cls.avg})
-    wandb.log({"train_loss_mse_{}".format(dataset): losses_mse.avg})
+    print("Epoch: [{}]".format(epoch), "Train_Loss_cls: {:.4e}".format(losses_cls.avg), "Train_Loss_mse: {:.4e}".format(losses_mse.avg))
+    # wandb.log({"train_loss_cls_{}".format(dataset): losses_cls.avg})
+    # wandb.log({"train_loss_mse_{}".format(dataset): losses_mse.avg})
 
 
 def ema_update_teacher(model, teacher, momentum_schedule, it):

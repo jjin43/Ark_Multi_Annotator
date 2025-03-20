@@ -1,5 +1,5 @@
 ChestXray14: 
-  data_dir: <PATH_TO_DATASET>/nih_xray14/images/images
+  data_dir: /data/jliang12/dongaoma/ChestX-ray14/images
   train_list: ../dataset/ChestXray14/Xray14_train_official.txt
   val_list: ../dataset/ChestXray14/Xray14_val_official.txt
   test_list:  ../dataset/ChestXray14/Xray14_test_official.txt
@@ -7,7 +7,7 @@ ChestXray14:
   task_type: multi-label classification
 
 CheXpert: 
-  data_dir: <PATH_TO_DATASET>/
+  data_dir: /data/jliang12/jpang12/dataset/CheXpert-v1.0/
   train_list: ../dataset/CheXpert/CheXpert-v1.0_train.csv
   val_list: ../dataset/CheXpert/CheXpert-v1.0_valid.csv
   test_list: ../dataset/CheXpert/CheXpert-v1.0_valid.csv
@@ -16,7 +16,7 @@ CheXpert:
   task_type: multi-label classification
 
 Shenzhen: 
-  data_dir: <PATH_TO_DATASET>/ShenzhenHospitalXray/ChinaSet_AllFiles/CXR_png/
+  data_dir: /data/jliang12/mhossei2/Dataset/ShenzhenHospitalXray/ChinaSet_AllFiles/CXR_png/
   train_list: ../dataset/Shenzhen/ShenzenCXR_train_data.txt
   val_list: ../dataset/Shenzhen/ShenzenCXR_valid_data.txt
   test_list: ../dataset/Shenzhen/ShenzenCXR_test_data.txt
@@ -24,15 +24,179 @@ Shenzhen:
   task_type: binary classification
 
 VinDrCXR: 
-  data_dir: <PATH_TO_DATASET>/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
-  train_list: ../dataset/VinDrCXR/VinDrCXR_train_pe_global_one.txt
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/3row_6class/VinDrCXR_train_pe_global_one.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  # diseases: ['Aortic enlargement', 'Atelectasis', 'Calcification', 'Cardiomegaly', 'Clavicle fracture', 'Consolidation', 'Edema', 'Emphysema', 'Enlarged PA', 'ILD', 'Infiltration', 'Lung Opacity', 'Lung cavity', 'Lung cyst', 'Mediastinal shift', 'Nodule/Mass', 'Pleural effusion', 'Pleural thickening', 'Pneumothorax', 'Pulmonary fibrosis', 'Rib fracture', 'Other lesion']
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_row1: 
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/3row_6class/rad_row1.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  # diseases: ['Aortic enlargement', 'Atelectasis', 'Calcification', 'Cardiomegaly', 'Clavicle fracture', 'Consolidation', 'Edema', 'Emphysema', 'Enlarged PA', 'ILD', 'Infiltration', 'Lung Opacity', 'Lung cavity', 'Lung cyst', 'Mediastinal shift', 'Nodule/Mass', 'Pleural effusion', 'Pleural thickening', 'Pneumothorax', 'Pulmonary fibrosis', 'Rib fracture', 'Other lesion']
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_row2: 
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/3row_6class/rad_row2.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  # diseases: ['Aortic enlargement', 'Atelectasis', 'Calcification', 'Cardiomegaly', 'Clavicle fracture', 'Consolidation', 'Edema', 'Emphysema', 'Enlarged PA', 'ILD', 'Infiltration', 'Lung Opacity', 'Lung cavity', 'Lung cyst', 'Mediastinal shift', 'Nodule/Mass', 'Pleural effusion', 'Pleural thickening', 'Pneumothorax', 'Pulmonary fibrosis', 'Rib fracture', 'Other lesion']
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_row3: 
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/3row_6class/rad_row3.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  # diseases: ['Aortic enlargement', 'Atelectasis', 'Calcification', 'Cardiomegaly', 'Clavicle fracture', 'Consolidation', 'Edema', 'Emphysema', 'Enlarged PA', 'ILD', 'Infiltration', 'Lung Opacity', 'Lung cavity', 'Lung cyst', 'Mediastinal shift', 'Nodule/Mass', 'Pleural effusion', 'Pleural thickening', 'Pneumothorax', 'Pulmonary fibrosis', 'Rib fracture', 'Other lesion']
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad1:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R1.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad2:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R2.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad3:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R3.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad4:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R4.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad5:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R5.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad6:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R6.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad7:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R7.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad8:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R8.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad9:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R9.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad10:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R10.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad11:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R11.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad12:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R12.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad13:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R13.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad14:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R14.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad15:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R15.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad16:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R16.txt
+  val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
+  diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+  task_type: multi-label classification
+
+VinDrCXR_rad17:
+  data_dir: /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
+  train_list: ../dataset/VinDrCXR/17rad_6class/R17.txt
   val_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
   test_list: ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
   diseases: ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
   task_type: multi-label classification
 
 RSNAPneumonia: 
-  data_dir: <PATH_TO_DATASET>/rsna-pneumonia-detection-challenge/stage_2_train_images_png/
+  data_dir: /data/jliang12/jpang12/dataset/rsna-pneumonia-detection-challenge/stage_2_train_images_png/
   train_list: ../dataset/RSNA/RSNAPneumonia_train.txt
   val_list: ../dataset/RSNA/RSNAPneumonia_val.txt
   test_list: ../dataset/RSNA/RSNAPneumonia_test.txt
@@ -40,7 +204,7 @@ RSNAPneumonia:
   task_type: multi-class classification
 
 MIMIC: 
-  data_dir: <PATH_TO_DATASET>/MIMIC_jpeg/physionet.org/files/mimic-cxr-jpg/2.0.0/
+  data_dir: /data/jliang12/jpang12/dataset/MIMIC_jpeg/physionet.org/files/mimic-cxr-jpg/2.0.0/
   train_list: ../dataset/MIMIC/mimic-cxr-2.0.0-train.csv
   val_list: ../dataset/MIMIC/mimic-cxr-2.0.0-validate.csv
   test_list: ../dataset/MIMIC/mimic-cxr-2.0.0-test.csv
