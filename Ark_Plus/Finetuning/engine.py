@@ -25,7 +25,7 @@ from timm.utils import NativeScaler
 sys.setrecursionlimit(40000)
 
 
-def classification_engine(args, model_path, output_path, diseases, dataset_train, dataset_val, dataset_test, test_diseases=None):
+def classification_engine(args, model_path, output_path, diseases, dataset_train, dataset_val, dataset_test, test_diseases=None, rad17=False):
   device = torch.device(args.device)
   cudnn.benchmark = True
 
@@ -42,8 +42,9 @@ def classification_engine(args, model_path, output_path, diseases, dataset_train
                             num_workers=args.workers, pin_memory=True)  
   # training phase
   if args.mode == "train":
-    data_loader_train = DataLoader(dataset=dataset_train, batch_size=args.batch_size, shuffle=True,
-                                   num_workers=args.workers, pin_memory=True)
+    if not rad17:
+      data_loader_train = DataLoader(dataset=dataset_train, batch_size=args.batch_size, shuffle=True,
+                                    num_workers=args.workers, pin_memory=True)
     data_loader_val = DataLoader(dataset=dataset_val, batch_size=args.batch_size, shuffle=False,
                                  num_workers=args.workers, pin_memory=True)
                            
@@ -110,6 +111,13 @@ def classification_engine(args, model_path, output_path, diseases, dataset_train
       for epoch in range(start_epoch, args.epochs):
         if args.skip_training:
           break
+        
+        if rad17:
+          rad_id = epoch % 17   # 0-16
+          print("Epoch {:04d}: Using Rad dataset {}".format(epoch, rad_id))
+          data_loader_train = DataLoader(dataset=dataset_train[rad_id], batch_size=args.batch_size, shuffle=True,
+                                    num_workers=args.workers, pin_memory=True)
+        
         train_one_epoch(data_loader_train,device, model, criterion, optimizer, epoch)
 
         val_loss = evaluate(data_loader_val, device,model, criterion)

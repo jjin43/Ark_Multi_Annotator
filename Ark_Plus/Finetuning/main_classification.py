@@ -200,6 +200,29 @@ def main(args):
         dataset_test = VinDrCXR_all(images_path=args.data_dir, file_path=args.test_list,diseases=diseases,
                                    augment=build_transform_classification(normalize=args.normalization, mode="test", crop_size=args.input_size, resize = args.img_size))
         classification_engine(args, model_path, output_path, diseases, dataset_train, dataset_val, dataset_test)
+    elif args.dataset == "VinDrCXR_17rad":
+        diseases = ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
+        
+        args.train_list = "" # input arg not used
+        rad17_base_dir = "../dataset/VinDrCXR/17rad_6class/"
+        dataset_train = []
+        
+        for i in range(1, 18):
+            args.train_list = os.path.join(rad17_base_dir, f"R{i}.txt")
+            rad_dataset = VinDrCXR(images_path=args.data_dir, file_path=args.train_list,
+                            augment=build_transform_classification(normalize=args.normalization, mode="train", crop_size=args.input_size, resize=args.img_size), few_shot=args.few_shot)
+            dataset_train.append(rad_dataset)
+
+        if(len(dataset_train) != 17):
+            raise ValueError("Error in loading VinDr-CXR radiologist datasets, expected 17 but got ", len(dataset_train))
+
+        dataset_val = VinDrCXR(images_path=args.data_dir, file_path=args.val_list,
+                                  augment=build_transform_classification(normalize=args.normalization, mode="valid", crop_size=args.input_size, resize = args.img_size))
+
+        dataset_test = VinDrCXR(images_path=args.data_dir, file_path=args.test_list,
+                                   augment=build_transform_classification(normalize=args.normalization, mode="test", crop_size=args.input_size, resize = args.img_size))
+        
+        classification_engine(args, model_path, output_path, diseases, dataset_train, dataset_val, dataset_test, test_diseases=None, rad17=True)
 
     elif args.data_set == "RSNAPneumonia":
         diseases = ['Normal', 'No Lung Opacity/Not Normal', 'Lung Opacity']
