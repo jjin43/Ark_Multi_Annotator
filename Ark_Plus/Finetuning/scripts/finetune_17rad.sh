@@ -1,7 +1,7 @@
 
 # Finetune on top of Ark's initial weight
 # Using VinDr-CXR seperated into 17 radiologists
-python main_classification.py --data_set VinDrCXR_17rad
+~/.conda/envs/ark/bin/python main_classification.py --data_set VinDrCXR_17rad
 --data_dir /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/
 --train_list unused_handled_in_main --val_list ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt --test_list ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt
 --lr 0.01 --opt sgd --epochs 200 --warmup-epochs 0 --batch_size 64 
