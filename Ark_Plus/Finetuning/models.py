@@ -25,6 +25,11 @@ from utils import load_swin_pretrained
 
 def build_classification_model(args):
     model = None
+    useVinDrHead = False
+    if args.data_set == 'VinDrCXR_17rad':
+        useVinDrHead = True
+    
+    
     print("Creating model...")
     if args.pretrained_weights is None or args.pretrained_weights =='':
         print('Loading pretrained {} weights for {} from timm.'.format(args.init, args.model_name))
@@ -140,27 +145,27 @@ def build_classification_model(args):
         elif args.model_name.lower() == "swin_large":
             model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size,
                 patch_size=4, window_size=7, embed_dim=192, depths=(2, 2, 18, 2), num_heads=(6, 12, 24, 48))
-            load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up)
+            load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up, useVinDrHead=useVinDrHead)
             
         elif args.model_name.lower() == "swin_large_384":
             model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size, 
                 patch_size=4, window_size=12, embed_dim=192, depths=(2, 2, 18, 2), num_heads=(6, 12, 24, 48))
-            load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up)
+            load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up, useVinDrHead=useVinDrHead)
         
         elif args.model_name.lower() == "swin_base":
             if args.init.lower() == "simmim":
                 model = simmim.create_model(args)
             elif args.init.lower() =="imagenet_1k":
                 model = timm.create_model('swin_base_patch4_window7_224', num_classes=args.num_class)
-                load_pretrained_weights(model, args.init.lower(), args.pretrained_weights)  
+                load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, useVinDrHead=useVinDrHead)  
             else:
                 model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size,
                     patch_size=4, window_size=7, embed_dim=128, depths=(2, 2, 18, 2), num_heads=(4, 8, 16, 32))
-                load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up)  
+                load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up, useVinDrHead=useVinDrHead)  
                 
         elif args.model_name.lower() == "swin_tiny": 
             model = timm.create_model('swin_tiny_patch4_window7_224', num_classes=args.num_class)
-            load_pretrained_weights(model, args.init.lower(), args.pretrained_weights)
+            load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, useVinDrHead=useVinDrHead)
             
         elif args.model_name.lower() == "convx_base":
           if args.init.lower().startswith("ark"):
@@ -174,7 +179,13 @@ def build_classification_model(args):
     return model  
     
 
-def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = None, scale_up = False):
+def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = None, scale_up = False, useVinDrHead = False):
+    # checkpoint = torch.load(args.pretrained_weights)
+    # state_dict = checkpoint[key]
+    # if any([True if 'module.' in k else False for k in state_dict.keys()]):
+    #             state_dict = {k.replace('module.', ''): v for k, v in state_dict.items() if k.startswith('module.')}
+    
+
     if pretrained_weights.startswith('https'):
         checkpoint = load_state_dict_from_url(url=pretrained_weights, map_location='cpu')
     else:
@@ -228,8 +239,17 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         if k in state_dict:
             print(f"Removing key {k} from pretrained checkpoint")
             del state_dict[k]
+            
     msg = model.load_state_dict(state_dict, strict=False)
     print('Loaded with msg: {}'.format(msg)) 
+
+    # Use Vindr Head from pretrained checkpoint
+    if useVinDrHead:
+        # VinDr head is the 4th head in omni_heads
+        from_head, to_head = 'omni_heads.4', 'head'
+        model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
+        model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+        print("Copied weights from pretrained head {} to model head {}.....".format(from_head, to_head))
 
     return model
 
