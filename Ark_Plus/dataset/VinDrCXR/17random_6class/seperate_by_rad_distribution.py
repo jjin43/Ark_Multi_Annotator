@@ -35,11 +35,11 @@ df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 # Split the data into subsets based on the distribution
 start_idx = 0
 for rad, count in rad_distribution.items():
-    subset = df.iloc[start_idx:start_idx + count]
+    subset = df.iloc[start_idx:start_idx + count].copy()  # create a copy here
     start_idx += count
 
-    # Add the prefix "train_jpeg/" to the image ids
-    subset['image_id'] = "train_jpeg/" + subset['image_id'].astype(str)
+    # Add the prefix "train_jpeg/" to the image ids using .loc
+    subset.loc[:, 'image_id'] = "train_jpeg/" + subset['image_id'].astype(str)
 
     # Save the subset to a text file with columns separated by a space
     output_file = f'{rad}.txt'
