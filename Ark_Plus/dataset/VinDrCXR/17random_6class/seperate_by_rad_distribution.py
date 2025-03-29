@@ -38,9 +38,12 @@ for rad, count in rad_distribution.items():
     subset = df.iloc[start_idx:start_idx + count]
     start_idx += count
 
-    # Save the subset to a text file
+    # Add the prefix "train_jpeg/" to the image ids
+    subset['image_id'] = "train_jpeg/" + subset['image_id'].astype(str)
+
+    # Save the subset to a text file with columns separated by a space
     output_file = f'{rad}.txt'
-    subset['image_id'].to_csv(output_file, index=False, header=False)
+    subset.to_csv(output_file, index=False, header=False, sep=" ")
 
 # Verify that all entries are included and no duplicates exist
 total_entries = sum(rad_distribution.values())

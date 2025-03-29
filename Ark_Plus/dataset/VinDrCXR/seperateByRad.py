@@ -21,7 +21,7 @@ for rad_id in df['rad_id'].unique():
     df_filtered['image_id'] = 'train_jpeg/' + df_filtered['image_id'].astype(str)
     
     # Create a filename based on rad_id
-    output_file = f'17rad_6class/{rad_id}.txt'
+    output_file = f'{rad_id}.txt'
     
     # Save the filtered dataframe to a new text file with space-separated values
     df_filtered.to_csv(output_file, index=False, sep=' ', header=False)
