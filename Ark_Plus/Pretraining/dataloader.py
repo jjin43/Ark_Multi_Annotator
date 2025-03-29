@@ -453,6 +453,75 @@ class VinDrCXR_rad16(VinDrCXR):
 class VinDrCXR_rad17(VinDrCXR):
   def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
     super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+# ----- Randomly distributed VinDrCXR data, using 17 radiologists distribution -----
+class VinDrCXR_random1(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random2(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random3(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random4(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random5(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random6(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random7(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random8(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random9(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random10(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random11(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random12(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random13(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random14(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random15(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random16(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
+    
+class VinDrCXR_random17(VinDrCXR):
+  def __init__(self, images_path, file_path, crop_size=224, resize=256, augment=None, num_class=6, annotation_percent=100):
+    super().__init__(images_path, file_path, crop_size, resize, augment, num_class, annotation_percent)
 
 # ---------------------------------------------Downstream RSNA Pneumonia------------------------------------------
 class RSNAPneumonia(Dataset):
@@ -707,5 +776,22 @@ dict_dataloarder = {
   "VinDrCXR_rad14": VinDrCXR_rad14,
   "VinDrCXR_rad15": VinDrCXR_rad15,
   "VinDrCXR_rad16": VinDrCXR_rad16,
-  "VinDrCXR_rad17": VinDrCXR_rad17
+  "VinDrCXR_rad17": VinDrCXR_rad17,
+  "VinDrCXR_random1": VinDrCXR_random1,
+  "VinDrCXR_random2": VinDrCXR_random2,
+  "VinDrCXR_random3": VinDrCXR_random3,
+  "VinDrCXR_random4": VinDrCXR_random4,
+  "VinDrCXR_random5": VinDrCXR_random5,
+  "VinDrCXR_random6": VinDrCXR_random6,
+  "VinDrCXR_random7": VinDrCXR_random7,
+  "VinDrCXR_random8": VinDrCXR_random8,
+  "VinDrCXR_random9": VinDrCXR_random9,
+  "VinDrCXR_random10": VinDrCXR_random10,
+  "VinDrCXR_random11": VinDrCXR_random11,
+  "VinDrCXR_random12": VinDrCXR_random12,
+  "VinDrCXR_random13": VinDrCXR_random13,
+  "VinDrCXR_random14": VinDrCXR_random14,
+  "VinDrCXR_random15": VinDrCXR_random15,
+  "VinDrCXR_random16": VinDrCXR_random16,
+  "VinDrCXR_random17": VinDrCXR_random17
 }
