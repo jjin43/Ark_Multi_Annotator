@@ -235,10 +235,10 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         for k in k_del:
             del state_dict[k]
 
-    removing = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
     if useVinDrHead:
-        placeholder = 0
-        # removing = ['head_dist.weight', 'head_dist.bias']
+        removing = ['head_dist.weight', 'head_dist.bias']
+    else:
+        removing = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
 
     for k in removing:
         if k in state_dict:
@@ -252,8 +252,8 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
     if useVinDrHead:
         # VinDr head is the 4th head in omni_heads
         from_head, to_head = 'omni_heads.4', 'head'
-        # model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
-        # model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+        model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
+        model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
         print("Copied weights from pretrained head {} to model head {}.....".format(from_head, to_head))
 
     return model
