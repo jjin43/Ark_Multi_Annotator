@@ -18,9 +18,9 @@ from timm.models.helpers import load_state_dict
 
 from functools import partial
 import simmim
-from upernet_swin_transformer import UperNet_swin
-from convnext import ConvNeXt
-from resnet import ResNet50
+#from upernet_swin_transformer import UperNet_swin
+#from convnext import ConvNeXt
+#from resnet import ResNet50
 from utils import load_swin_pretrained
 
 def build_classification_model(args):
@@ -235,7 +235,12 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         for k in k_del:
             del state_dict[k]
 
-    for k in ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']:
+    removing = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
+    if useVinDrHead:
+        placeholder = 0
+        #removing = ['head_dist.weight', 'head_dist.bias']
+
+    for k in removing:
         if k in state_dict:
             print(f"Removing key {k} from pretrained checkpoint")
             del state_dict[k]
@@ -247,8 +252,8 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
     if useVinDrHead:
         # VinDr head is the 4th head in omni_heads
         from_head, to_head = 'omni_heads.4', 'head'
-        model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
-        model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+        #model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
+        #model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
         print("Copied weights from pretrained head {} to model head {}.....".format(from_head, to_head))
 
     return model

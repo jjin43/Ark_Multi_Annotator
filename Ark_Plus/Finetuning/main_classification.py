@@ -200,7 +200,7 @@ def main(args):
         dataset_test = VinDrCXR_all(images_path=args.data_dir, file_path=args.test_list,diseases=diseases,
                                    augment=build_transform_classification(normalize=args.normalization, mode="test", crop_size=args.input_size, resize = args.img_size))
         classification_engine(args, model_path, output_path, diseases, dataset_train, dataset_val, dataset_test)
-    elif args.dataset == "VinDrCXR_17rad":
+    elif args.data_set == "VinDrCXR_17rad":
         diseases = ['PE', 'Lung tumor', 'Pneumonia', 'Tuberculosis', 'Other diseases', 'No finding']
         
         args.train_list = "" # input arg not used

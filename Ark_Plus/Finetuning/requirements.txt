@@ -1,13 +1,13 @@
-numpy==1.21.2
-tqdm
+#numpy==1.21.1
+#tqdm
 scikit-image==0.16.2
 scikit-learn==0.22.2.post1
-simpleitk==2.0.2
+#simpleitk==2.1.0
 scipy
 pydicom
 yacs
 einops
-opencv-python==4.2.0.32
+opencv-python==4.5.3.56
 timm==0.5.4
 transformers==4.1.1 
 albumentations==0.4.3
