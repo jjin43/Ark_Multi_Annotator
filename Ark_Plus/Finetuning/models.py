@@ -235,12 +235,8 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         for k in k_del:
             del state_dict[k]
 
-    if useVinDrHead:
-        removing = ['head_dist.weight', 'head_dist.bias']
-    else:
-        removing = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
 
-    for k in removing:
+    for k in ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']:
         if k in state_dict:
             print(f"Removing key {k} from pretrained checkpoint")
             del state_dict[k]
