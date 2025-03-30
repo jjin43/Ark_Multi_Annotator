@@ -237,6 +237,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
 
     removing = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
     if useVinDrHead:
+        placeholder = 0
         removing = ['head_dist.weight', 'head_dist.bias']
 
     for k in removing:
@@ -250,9 +251,9 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
     # Use Vindr Head from pretrained checkpoint
     if useVinDrHead:
         # VinDr head is the 4th head in omni_heads
-        from_head, to_head = 'omni_heads.4', 'head'
-        model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
-        model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+        # from_head, to_head = 'omni_heads.4', 'head'
+        # model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
+        # model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
         print("Copied weights from pretrained head {} to model head {}.....".format(from_head, to_head))
 
     return model
