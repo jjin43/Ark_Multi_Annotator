@@ -238,7 +238,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
     removing = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
     if useVinDrHead:
         placeholder = 0
-        removing = ['head_dist.weight', 'head_dist.bias']
+        # removing = ['head_dist.weight', 'head_dist.bias']
 
     for k in removing:
         if k in state_dict:
