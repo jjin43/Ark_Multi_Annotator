@@ -264,7 +264,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         # VinDr head is the 4th head in omni_heads
         from_head, to_head = 'omni_heads.4', 'head'
         from_weight = state_dict[from_head + '.weight']  # shape [6, 1376]
-        to_weight = model.state_dict()[to_head + '.weight']
+        to_weight = model.state_dict()[to_head + '.weight'] # shape [6, 1024]
         print(f"Copying weights from {from_head} with size {from_weight.size(1)} to {to_head} with size {to_weight.size(1)}")
         
         # VinDr head dimension is [6, 1376] and the model head dimension is [6, 1024]
