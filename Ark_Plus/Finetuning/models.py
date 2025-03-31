@@ -262,20 +262,18 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
     # Use Vindr Head from pretrained checkpoint
     if useVinDrHead:
         from_head, to_head = 'omni_heads.4', 'head'
-        print("Copied weights from pretrained head {} to model head {}.....".format(from_head, to_head))
-        from_dim = state_dict[from_head + '.weight'].size(1)  # 1376
-        to_dim = model.state_dict()[to_head + '.weight'].size(1)  # 1024
-        print("from_dim: {}, to_dim: {}".format(from_dim, to_dim))
-        if from_dim != to_dim:
-            projector = Projector(from_dim, to_dim, use_mlp=True)
+        from_weight = state_dict[from_head + '.weight']  # shape [6, 1376]
+        to_weight = model.state_dict()[to_head + '.weight']
+        print(f"Copying weights from {from_head} with size {from_weight.size(1)} to {to_head} with size {to_weight.size(1)}")
+        if from_weight.size(1) != to_weight.size(1):
+            projector = Projector(from_weight.size(1), to_weight.size(1), use_mlp=True)
             with torch.no_grad():
-                # Project the old weights to the new size
-                projected_weight = projector(state_dict[from_head + '.weight'].T).T
-                model.state_dict()[to_head + '.weight'].copy_(projected_weight)
-            # Copy bias normally or adjust if needed
+                projected_weight = projector(from_weight)
+                to_weight.copy_(projected_weight)
             model.state_dict()[to_head + '.bias'].copy_(
                 state_dict[from_head + '.bias']
             )
+
         # Error
         # File "/scratch/jjin43/ark/Ark_Multi_Annotator/Ark_Plus/Finetuning/models.py", line 253, in load_pretrained_weights
         #     model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
