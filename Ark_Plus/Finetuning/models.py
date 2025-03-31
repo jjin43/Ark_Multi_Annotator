@@ -243,52 +243,40 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             
     msg = model.load_state_dict(state_dict, strict=False)
     print('Loaded with msg: {}'.format(msg)) 
+    
+    class Projector(nn.Module):
+        def __init__(self, in_features, out_features, use_mlp=False):
+            super().__init__()
+            if use_mlp:
+                self.projector = nn.Sequential(
+                    nn.Linear(in_features, out_features),
+                    nn.ReLU(inplace=True),
+                    nn.Linear(out_features, out_features)
+                )
+            else:
+                self.projector = nn.Linear(in_features, out_features)
+        
+        def forward(self, x):
+            return self.projector(x)
 
     # Use Vindr Head from pretrained checkpoint
     if useVinDrHead:
-        # VinDr head is the 4th head in omni_heads
         from_head, to_head = 'omni_heads.4', 'head'
-    
-        # Get the weights and biases from the pretrained checkpoint
-        from_weight = state_dict[from_head + '.weight']
-        from_bias = state_dict[from_head + '.bias']
-
-    
-        # Check if dimensions mismatch
-        if from_weight.size(0) != 1376:
-            print(f"Projecting weights from {from_weight.size(0)} to 1376 dimensions using MLP...")
-    
-            # Define the MLP projector
-            encoder_features = from_weight.size(0)  # 1024
-            projector_features = 1376  # Target dimension
-            projector = nn.Sequential(
-                nn.Linear(encoder_features, projector_features),
-                nn.ReLU(inplace=True),
-                nn.Linear(projector_features, projector_features)
-            )
-    
-            # Project weights
-            projected_weight = projector(from_weight.t()).t()  # Transpose for compatibility
-    
-            # Project biases
-            bias_projector = nn.Sequential(
-                nn.Linear(encoder_features, projector_features),
-                nn.ReLU(inplace=True),
-                nn.Linear(projector_features, projector_features)
-            )
-            projected_bias = bias_projector(from_bias.unsqueeze(0)).squeeze(0)
-    
-            # Assign the projected weights and biases
-            model.state_dict()[to_head + '.weight'].copy_(projected_weight)
-            model.state_dict()[to_head + '.bias'].copy_(projected_bias)
-        else:
-            # Directly copy if dimensions match
-            model.state_dict()[to_head + '.weight'].copy_(from_weight)
-            model.state_dict()[to_head + '.bias'].copy_(from_bias)
-    
         print("Copied weights from pretrained head {} to model head {}.....".format(from_head, to_head))
-        
-        # Error:
+        from_dim = state_dict[from_head + '.weight'].size(1)  # 1376
+        to_dim = model.state_dict()[to_head + '.weight'].size(1)  # 1024
+        print("from_dim: {}, to_dim: {}".format(from_dim, to_dim))
+        if from_dim != to_dim:
+            projector = Projector(from_dim, to_dim, use_mlp=True)
+            with torch.no_grad():
+                # Project the old weights to the new size
+                projected_weight = projector(state_dict[from_head + '.weight'].T).T
+                model.state_dict()[to_head + '.weight'].copy_(projected_weight)
+            # Copy bias normally or adjust if needed
+            model.state_dict()[to_head + '.bias'].copy_(
+                state_dict[from_head + '.bias']
+            )
+        # Error
         # File "/scratch/jjin43/ark/Ark_Multi_Annotator/Ark_Plus/Finetuning/models.py", line 253, in load_pretrained_weights
         #     model.state_dict()[to_head + '.weight'].copy_(state_dict[from_head + '.weight'])
         # RuntimeError: The size of tensor a (1024) must match the size of tensor b (1376) at non-singleton dimension 1
