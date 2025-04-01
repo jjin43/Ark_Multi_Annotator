@@ -158,7 +158,7 @@ def build_classification_model(args):
                 model = simmim.create_model(args)
             elif args.init.lower() =="imagenet_1k":
                 model = timm.create_model('swin_base_patch4_window7_224', num_classes=args.num_class)
-                load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, useVinDrHead=useVinDrHead)  
+                load_pretrained_weights(model, args.init.lower(), args.pretrained_weights)  
             else:
                 print("Using swin_base pretrained weights from Ark.")
                 model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size,
@@ -167,7 +167,7 @@ def build_classification_model(args):
                 
         elif args.model_name.lower() == "swin_tiny": 
             model = timm.create_model('swin_tiny_patch4_window7_224', num_classes=args.num_class)
-            load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, useVinDrHead=useVinDrHead)
+            load_pretrained_weights(model, args.init.lower(), args.pretrained_weights)
             
         elif args.model_name.lower() == "convx_base":
           if args.init.lower().startswith("ark"):
@@ -266,7 +266,6 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         to_weight = model.state_dict()[to_head + '.weight'] # shape [6, 1024]
         print(f"Copying weights from {from_head} with size {from_weight.size(1)} to {to_head} with size {to_weight.size(1)}")
         
-        # VinDr head dimension is [6, 1376] and the model head dimension is [6, 1024]
         if from_weight.size(1) != to_weight.size(1):
             # copy weights with projector
             print(f"Projecting weights from {from_head} to {to_head}")
@@ -276,6 +275,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
                 model.state_dict()[to_head + '.weight'].copy_(projected_weight)
             
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+            
         else:
             model.state_dict()[to_head + '.weight'].copy_(from_weight)
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
