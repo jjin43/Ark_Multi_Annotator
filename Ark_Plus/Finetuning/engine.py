@@ -115,7 +115,8 @@ def classification_engine(args, model_path, output_path, diseases, dataset_train
         if epoch == 0 and args.test_every_epoch:
           # test the model before training, check if initial weights are loaded correctly
           print("Testing the model before training - checking initial weights")
-          y_test, p_test = test_model(model, data_loader_test, args)
+          # y_test, p_test = test_model(model, data_loader_test, args)
+          y_test, p_test = test_classification(args.pretrained_weights, data_loader_test, device, args)
           y_test = y_test.cpu().numpy()
           p_test = p_test.cpu().numpy()
 

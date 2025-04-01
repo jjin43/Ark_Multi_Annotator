@@ -282,7 +282,6 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
             
         print(f"head weight after projection: {model.state_dict()[to_head + '.weight'][:2]}")
-        print(f"target head weight: {state_dict[from_head + '.weight'][:2]}")
         
     return model
 
