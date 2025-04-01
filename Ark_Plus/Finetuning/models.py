@@ -247,7 +247,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             
     msg = model.load_state_dict(state_dict, strict=False)
     print('Loaded with msg: {}'.format(msg)) 
-    print(model.state_dict().keys())
+
     
     class Projector(nn.Module):
         def __init__(self, in_features, out_features, use_mlp):
@@ -277,8 +277,9 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             # copy weights with projector
             projector = Projector(from_weight.size(1), to_weight.size(1), use_mlp=True)
             with torch.no_grad():
+                print(f"Projecting weights from {from_head} to {to_head}")
                 projected_weight = projector(from_weight)
-                to_weight.copy_(projected_weight)
+                model.state_dict()[to_head + '.weight'].copy_(projected_weight)
             
             # copy bias
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
