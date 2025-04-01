@@ -265,22 +265,24 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         from_head, to_head = 'omni_heads.4', 'head'
         from_weight = state_dict[from_head + '.weight']  # shape [6, 1376]
         to_weight = model.state_dict()[to_head + '.weight'] # shape [6, 1024]
-        print("from_head bias shape: ", state_dict[from_head + '.bias'].shape)
-        print("to_head bias shape: ", model.state_dict()[to_head + '.bias'].shape)
         print(f"Copying weights from {from_head} with size {from_weight.size(1)} to {to_head} with size {to_weight.size(1)}")
         
         # VinDr head dimension is [6, 1376] and the model head dimension is [6, 1024]
         if from_weight.size(1) != to_weight.size(1):
             # copy weights with projector
+            print(f"Head weight Before: {model.state_dict()[to_head + '.weight'][:2]}")  # Print a small sample for verification
             projector = Projector(from_weight.size(1), to_weight.size(1), use_mlp=True)
             with torch.no_grad():
                 print(f"Projecting weights from {from_head} to {to_head}")
                 projected_weight = projector(from_weight)
                 print(f"Projected weight size: {projected_weight.size()}")
                 model.state_dict()[to_head + '.weight'].copy_(projected_weight)
+            print(f"Head weight After: {model.state_dict()[to_head + '.weight'][:2]}")
             
             # copy bias
+            print(f"Head bias Before: {model.state_dict()[to_head + '.bias'][:2]}")
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+            print(f"Head bias After: {model.state_dict()[to_head + '.bias'][:2]}")
 
     return model
 
