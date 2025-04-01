@@ -268,6 +268,10 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         print(f"Copying weights from {from_head} with size {from_weight.size(1)} to {to_head} with size {to_weight.size(1)}")
         
         # VinDr head dimension is [6, 1376] and the model head dimension is [6, 1024]
+        model.head = nn.Linear(1376, 6, bias=True)
+        model.state_dict()[to_head + '.weight'].copy_(from_weight)  # Copy the weights from VinDr head
+        model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+
         if from_weight.size(1) != to_weight.size(1):
             # copy weights with projector
             print(f"Head weight Before: {model.state_dict()[to_head + '.weight'][:2]}")  # Print a small sample for verification
@@ -282,7 +286,6 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             # copy bias
             print(f"Head bias Before: {model.state_dict()[to_head + '.bias'][:2]}")
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
-            print(f"Head bias After: {model.state_dict()[to_head + '.bias'][:2]}")
 
     return model
 
