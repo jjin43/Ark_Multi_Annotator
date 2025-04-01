@@ -182,11 +182,6 @@ def build_classification_model(args):
     
 
 def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = None, scale_up = False, useVinDrHead = False):
-    # checkpoint = torch.load(args.pretrained_weights)
-    # state_dict = checkpoint[key]
-    # if any([True if 'module.' in k else False for k in state_dict.keys()]):
-    #             state_dict = {k.replace('module.', ''): v for k, v in state_dict.items() if k.startswith('module.')}
-    
 
     if pretrained_weights.startswith('https'):
         checkpoint = load_state_dict_from_url(url=pretrained_weights, map_location='cpu')
@@ -238,7 +233,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             del state_dict[k]
 
 
-    remove_keys = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
+    remove_keys = ['head_dist.weight', 'head_dist.bias']
     print(state_dict.keys())
     for k in remove_keys:
         if k in state_dict:
