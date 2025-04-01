@@ -266,6 +266,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         to_weight = model.state_dict()[to_head + '.weight'] # shape [6, 1024]
         print(f"Copying weights from {from_head} with size {from_weight.size(1)} to {to_head} with size {to_weight.size(1)}")
         
+        print(f"head weight before projection: {model.state_dict()[to_head + '.weight'][:2]}")
         if from_weight.size(1) != to_weight.size(1):
             # copy weights with projector
             print(f"Projecting weights from {from_head} to {to_head}")
@@ -279,7 +280,9 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         else:
             model.state_dict()[to_head + '.weight'].copy_(from_weight)
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
-
+            
+        print(f"head weight after projection: {model.state_dict()[to_head + '.weight'][:2]}")
+        
     return model
 
 def save_checkpoint(state,filename='model'):
