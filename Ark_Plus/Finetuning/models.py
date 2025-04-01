@@ -27,6 +27,7 @@ def build_classification_model(args):
     model = None
     useVinDrHead = False
     if args.data_set == 'VinDrCXR_17rad':
+        print("Using VinDr Head")
         useVinDrHead = True
     
     
@@ -159,6 +160,7 @@ def build_classification_model(args):
                 model = timm.create_model('swin_base_patch4_window7_224', num_classes=args.num_class)
                 load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, useVinDrHead=useVinDrHead)  
             else:
+                print("Using swin_base pretrained weights from Ark.")
                 model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size,
                     patch_size=4, window_size=7, embed_dim=128, depths=(2, 2, 18, 2), num_heads=(4, 8, 16, 32))
                 load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up, useVinDrHead=useVinDrHead)  
@@ -236,7 +238,9 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             del state_dict[k]
 
 
-    for k in ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']:
+    remove_keys = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
+    print(state_dict.keys())
+    for k in remove_keys:
         if k in state_dict:
             print(f"Removing key {k} from pretrained checkpoint")
             del state_dict[k]
