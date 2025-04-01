@@ -234,7 +234,6 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
 
 
     remove_keys = ['head.weight', 'head.bias', 'head_dist.weight', 'head_dist.bias']
-    print(state_dict.keys())
     for k in remove_keys:
         if k in state_dict:
             print(f"Removing key {k} from pretrained checkpoint")
@@ -260,33 +259,25 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             return self.projector(x)
 
     # Use Vindr Head from pretrained checkpoint
-    model.head = nn.Linear(1376, 6, bias=True)
     if useVinDrHead:
         # VinDr head is the 4th head in omni_heads
         from_head, to_head = 'omni_heads.4', 'head'
         from_weight = state_dict[from_head + '.weight']  # shape [6, 1376]
-        model.head = nn.Linear(1376, 6, bias=True)
         to_weight = model.state_dict()[to_head + '.weight'] # shape [6, 1024]
         print(f"Copying weights from {from_head} with size {from_weight.size(1)} to {to_head} with size {to_weight.size(1)}")
         
         # VinDr head dimension is [6, 1376] and the model head dimension is [6, 1024]
-
-        model.state_dict()[to_head + '.weight'].copy_(from_weight)  # Copy the weights from VinDr head
-        model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
-
         if from_weight.size(1) != to_weight.size(1):
             # copy weights with projector
-            print(f"Head weight Before: {model.state_dict()[to_head + '.weight'][:2]}")  # Print a small sample for verification
-            projector = Projector(from_weight.size(1), to_weight.size(1), use_mlp=True)
+            print(f"Projecting weights from {from_head} to {to_head}")
+            projector = Projector(from_weight.size(1), to_weight.size(1), use_mlp=False)
             with torch.no_grad():
-                print(f"Projecting weights from {from_head} to {to_head}")
                 projected_weight = projector(from_weight)
-                print(f"Projected weight size: {projected_weight.size()}")
                 model.state_dict()[to_head + '.weight'].copy_(projected_weight)
-            print(f"Head weight After: {model.state_dict()[to_head + '.weight'][:2]}")
             
-            # copy bias
-            print(f"Head bias Before: {model.state_dict()[to_head + '.bias'][:2]}")
+            model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+        else:
+            model.state_dict()[to_head + '.weight'].copy_(from_weight)
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
 
     return model
