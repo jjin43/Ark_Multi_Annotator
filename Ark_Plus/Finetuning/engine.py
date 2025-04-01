@@ -117,6 +117,37 @@ def classification_engine(args, model_path, output_path, diseases, dataset_train
           print("Epoch {:04d}: Using Rad dataset {}".format(epoch, rad_id))
           data_loader_train = DataLoader(dataset=dataset_train[rad_id], batch_size=args.batch_size, shuffle=True,
                                     num_workers=args.workers, pin_memory=True)
+          
+        if epoch == 0 and args.test_every_epoch:
+          # test the model before training
+          print("Testing the model before training")
+          y_test, p_test = test_model(model, data_loader_test, args)
+          y_test = y_test.cpu().numpy()
+          p_test = p_test.cpu().numpy()
+
+          if args.data_set in ["RSNAPneumonia", "COVIDx"]:
+            acc = accuracy_score(np.argmax(y_test,axis=1),np.argmax(p_test,axis=1))
+            print(">>{}: ACCURACY = {}".format(experiment,acc))
+            with open(output_file, 'a') as writer:
+              writer.write(
+                "{}: ACCURACY = {}\n".format(experiment, np.array2string(np.array(acc), precision=4, separator='\t')))
+            accuracy.append(acc)
+          
+          if test_diseases is not None:
+            y_test = copy.deepcopy(y_test[:,test_diseases])
+            p_test = copy.deepcopy(p_test[:,test_diseases])
+
+          mAUC, auc_scores = meanAUC(y_test, p_test)
+          mMCC, mcc_scores = meanMCC(y_test, p_test)
+          mAP, ap_scores = meanAP(y_test, p_test)
+          mF1, f1_scores = meanF1(y_test, p_test)
+            
+          print(">> Mean AUC = {:.4f} \nAUC = {}".format(mAUC, np.array2string(np.array(auc_scores), precision=4, separator=',')))
+          print(">> Mean MCC = {:.4f} \nMCC = {}".format(mMCC, np.array2string(np.array(mcc_scores), precision=4, separator=',')))
+          print(">> Mean AP = {:.4f} \nAP = {}".format(mAP, np.array2string(np.array(ap_scores), precision=4, separator=',')))
+          print(">> Mean F1 = {:.4f} \nF1 = {}".format(mF1, np.array2string(np.array(f1_scores), precision=4, separator=',')))
+          mean_result_list.append(mAUC)
+          result_list.append([mAUC,mMCC,mAP,mF1])
         
         train_one_epoch(data_loader_train,device, model, criterion, optimizer, epoch)
 
