@@ -247,6 +247,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             
     msg = model.load_state_dict(state_dict, strict=False)
     print('Loaded with msg: {}'.format(msg)) 
+    print(model.state_dict().keys())
     
     class Projector(nn.Module):
         def __init__(self, in_features, out_features, use_mlp):
