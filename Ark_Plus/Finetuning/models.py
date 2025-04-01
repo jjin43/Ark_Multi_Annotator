@@ -162,7 +162,7 @@ def build_classification_model(args):
             else:
                 print("Using swin_base pretrained weights from Ark.")
                 model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size,
-                    patch_size=4, window_size=7, embed_dim=172, depths=(2, 2, 18, 2), num_heads=(4, 8, 16, 32))
+                    patch_size=4, window_size=7, embed_dim=128, depths=(2, 2, 18, 2), num_heads=(4, 8, 16, 32))
                 load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up, useVinDrHead=useVinDrHead)  
                 
         elif args.model_name.lower() == "swin_tiny": 
