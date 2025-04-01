@@ -162,7 +162,7 @@ def build_classification_model(args):
             else:
                 print("Using swin_base pretrained weights from Ark.")
                 model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size,
-                    patch_size=4, window_size=7, embed_dim=128, depths=(2, 2, 18, 2), num_heads=(4, 8, 16, 32))
+                    patch_size=4, window_size=7, embed_dim=172, depths=(2, 2, 18, 2), num_heads=(4, 8, 16, 32))
                 load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up, useVinDrHead=useVinDrHead)  
                 
         elif args.model_name.lower() == "swin_tiny": 
@@ -266,7 +266,7 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         to_weight = model.state_dict()[to_head + '.weight'] # shape [6, 1024]
         print(f"Copying weights from {from_head} with size {from_weight.size(1)} to {to_head} with size {to_weight.size(1)}")
         
-        print(f"head weight before projection: {model.state_dict()[to_head + '.weight'][:2]}")
+        print(f"head weight Before Copy: {model.state_dict()[to_head + '.weight'][:2]}")
         if from_weight.size(1) != to_weight.size(1):
             # copy weights with projector
             print(f"Projecting weights from {from_head} to {to_head}")
@@ -278,10 +278,11 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
             
         else:
+            print(f"Directly copying weights from {from_head} to {to_head}")
             model.state_dict()[to_head + '.weight'].copy_(from_weight)
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
             
-        print(f"head weight after projection: {model.state_dict()[to_head + '.weight'][:2]}")
+        print(f"head weight After Copy: {model.state_dict()[to_head + '.weight'][:2]}")
         
     return model
 
