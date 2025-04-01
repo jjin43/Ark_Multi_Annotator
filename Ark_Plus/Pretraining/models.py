@@ -65,8 +65,6 @@ def build_omni_model_from_checkpoint(args, num_classes_list, key):
         state_dict = checkpoint[key]
         if any([True if 'module.' in k else False for k in state_dict.keys()]):
                     state_dict = {k.replace('module.', ''): v for k, v in state_dict.items() if k.startswith('module.')}
-                    
-        state_dict['omni_heads.0.weight'] = state_dict['omni_heads.4.weight']
 
         msg = model.load_state_dict(state_dict, strict=False)
         print('Loaded with msg: {}'.format(msg))     
