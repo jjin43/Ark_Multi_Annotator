@@ -23,6 +23,21 @@ import simmim
 #from resnet import ResNet50
 from utils import load_swin_pretrained
 
+class Projector(nn.Module):
+    def __init__(self, in_features, out_features, use_mlp):
+        super().__init__()
+        if use_mlp:
+            self.projector = nn.Sequential(
+                nn.Linear(in_features, out_features),
+                nn.ReLU(inplace=True),
+                nn.Linear(out_features, out_features)
+            )
+        else:
+            self.projector = nn.Linear(in_features, out_features)
+    
+    def forward(self, x):
+        return self.projector(x)
+
 def build_classification_model(args):
     model = None
     useVinDrHead = False
@@ -163,6 +178,19 @@ def build_classification_model(args):
                 print("Using swin_base pretrained weights from Ark.")
                 model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size,
                     patch_size=4, window_size=7, embed_dim=128, depths=(2, 2, 18, 2), num_heads=(4, 8, 16, 32))
+
+                old_head = model.head         # shape (6, 1024)
+                in_features = model.num_features  # likely 1024
+                print("in_features: ", in_features)
+
+                projector_dim = 1376
+                my_projector = Projector(in_features, projector_dim, False)
+                my_old_head = nn.Linear(projector_dim, 6)  # shape (6, 1376)
+                model.head = nn.Sequential(
+                    my_projector,  # [batch, 1024] -> [batch, 1376]
+                    my_old_head    # [batch, 1376] -> [batch, 6]
+                )
+                
                 load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up, useVinDrHead=useVinDrHead)  
                 
         elif args.model_name.lower() == "swin_tiny": 
@@ -242,21 +270,6 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
     msg = model.load_state_dict(state_dict, strict=False)
     print('Loaded with msg: {}'.format(msg)) 
 
-    
-    class Projector(nn.Module):
-        def __init__(self, in_features, out_features, use_mlp):
-            super().__init__()
-            if use_mlp:
-                self.projector = nn.Sequential(
-                    nn.Linear(in_features, out_features),
-                    nn.ReLU(inplace=True),
-                    nn.Linear(out_features, out_features)
-                )
-            else:
-                self.projector = nn.Linear(in_features, out_features)
-        
-        def forward(self, x):
-            return self.projector(x)
 
     # Use Vindr Head from pretrained checkpoint
     if useVinDrHead:
@@ -269,13 +282,14 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
         print(f"head weight Before Copy: {model.state_dict()[to_head + '.weight'][:2]}")
         if from_weight.size(1) != to_weight.size(1):
             # copy weights with projector
-            print(f"Projecting weights from {from_head} to {to_head}")
-            projector = Projector(from_weight.size(1), to_weight.size(1), use_mlp=False)
-            with torch.no_grad():
-                projected_weight = projector(from_weight)
-                model.state_dict()[to_head + '.weight'].copy_(projected_weight)
+            # print(f"Projecting weights from {from_head} to {to_head}")
+            # projector = Projector(from_weight.size(1), to_weight.size(1), use_mlp=False)
+            # with torch.no_grad():
+            #     projected_weight = projector(from_weight)
+            #     model.state_dict()[to_head + '.weight'].copy_(projected_weight)
             
-            model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+            # model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
+            raise ValueError(f"Cannot copy weights from {from_head} to {to_head} due to size mismatch: {from_weight.size(1)} vs {to_weight.size(1)}")
             
         else:
             print(f"Directly copying weights from {from_head} to {to_head}")
