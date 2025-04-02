@@ -43,7 +43,7 @@ def build_classification_model(args):
     useVinDrHead = False
     if args.data_set == 'VinDrCXR_17rad':
         print("Using VinDr Head")
-        useVinDrHead = True
+        useVinDrHead = False
     
     
     print("Creating model...")
@@ -179,17 +179,18 @@ def build_classification_model(args):
                 model = SwinTransformer(num_classes=args.num_class, img_size = args.input_size,
                     patch_size=4, window_size=7, embed_dim=128, depths=(2, 2, 18, 2), num_heads=(4, 8, 16, 32))
 
-                curr_head = model.head
-                in_features = model.num_features
-                print("in_features: ", in_features)
+                if(useVinDrHead):
+                    curr_head = model.head
+                    in_features = model.num_features
+                    print("init_model_head_features: ", in_features)
 
-                projector_dim = 1376
-                projector = Projector(in_features, projector_dim, False)
-                vindr_head = nn.Linear(projector_dim, 6)  # shape (6, 1376)
-                model.head = nn.Sequential(
-                    projector,  # [batch, 1024] -> [batch, 1376]
-                    vindr_head    # [batch, 1376] -> [batch, 6]
-                )
+                    projector_dim = 1376
+                    projector = Projector(in_features, projector_dim, False)
+                    vindr_head = nn.Linear(projector_dim, 6)  # shape (6, 1376)
+                    model.head = nn.Sequential(
+                        projector,  # [batch, 1024] -> [batch, 1376]
+                        vindr_head    # [batch, 1376] -> [batch, 6]
+                    )
                 
                 load_pretrained_weights(model, args.init.lower(), args.pretrained_weights, args.key, args.scale_up, useVinDrHead=useVinDrHead)  
                 

@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=SLURM_Finetuned_17Vin_SameHead_TestAll
+#SBATCH --job-name=SLURM_Finetuned_17Vin_NewHead
 
 #SBATCH -N 1
 #SBATCH -G a100:1
 #SBATCH -c 8
 #SBATCH --mem=80G
-#SBATCH -t 1-00:00:00
+#SBATCH -t 0-08:00:00
 #SBATCH -p general
 #SBATCH -q public
 
@@ -21,7 +21,7 @@ source activate ark_ft
 # Finetune on top of Ark's initial weight
 # Using VinDr-CXR seperated into 17 radiologists
 ~/.conda/envs/ark_ft/bin/python main_classification.py \
---exp_name debug \
+--exp_name _new_head_vin17 \
 --data_set VinDrCXR_17rad --data_dir /data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/ \
 --train_list unused_handled_in_main --val_list ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt --test_list ../dataset/VinDrCXR/VinDrCXR_test_pe_global_one.txt \
 --num_class 6 --lr 0.01 --opt sgd --epochs 200 --warmup-epochs 20 --batch_size 64 \
