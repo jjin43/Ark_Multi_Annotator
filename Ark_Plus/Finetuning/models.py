@@ -293,6 +293,8 @@ def load_pretrained_weights(model, init, pretrained_weights, checkpoint_key = No
             
         else:
             print(f"Directly copying weights from {from_head} to {to_head}")
+            model.state_dict()['head.0.projector.weight'].copy_(state_dict['projector.weight'])
+            model.state_dict()['head.0.projector.bias'].copy_(state_dict['projector.bias'])
             model.state_dict()[to_head + '.weight'].copy_(from_weight)
             model.state_dict()[to_head + '.bias'].copy_(state_dict[from_head + '.bias'])
             
