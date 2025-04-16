@@ -41,7 +41,7 @@ class Projector(nn.Module):
 def build_classification_model(args):
     model = None
     useVinDrHead = False
-    if args.data_set == 'VinDrCXR_17rad':
+    if 'VinDrCXR' in args.data_set:
         print("Using VinDr Head")
         useVinDrHead = False
     

@@ -157,12 +157,65 @@ def omni_engine(args, model_path, output_path, dataset_list, datasets_config, da
         it = start_epoch * len(dataset_list)
         
         for epoch in range(start_epoch, args.pretrain_epochs):
+            if epoch == 0:
+                print("-- Testing the model before training -- check initialization --")
+                with open(output_file, 'a') as writer:
+                    writer.write("-- Testing the model before training -- check initial weights --\n")
+                    writer.write("Initialization:\n")
+                    t_res, t_res_teacher = [],[]
+                    for i, dataset in enumerate(dataset_list[:1]):
+                        diseases = datasets_config[dataset]['diseases']
+                        print(">>{} Disease = {}".format(dataset, diseases))
+                        writer.write("{} Disease = {}\n".format(dataset, diseases))
+
+                        multiclass =  datasets_config[dataset]['task_type'] == "multi-class classification"
+                        y_test, p_test = test_classification(model, i, data_loader_list_test[i], device, multiclass)
+                        y_test_teacher, p_test_teacher = test_classification(teacher, i, data_loader_list_test[i], device, multiclass)
+                        if multiclass:
+                            acc = accuracy_score(np.argmax(y_test.cpu().numpy(),axis=1),np.argmax(p_test.cpu().numpy(),axis=1))
+                            acc_teacher = accuracy_score(np.argmax(y_test_teacher.cpu().numpy(),axis=1),np.argmax(p_test_teacher.cpu().numpy(),axis=1))
+                            print(">>{}:Student ACCURACY = {}, \nTeacher ACCURACY = {}\n".format(dataset,acc, acc_teacher))
+                            writer.write(
+                                "\n{}: Student ACCURACY = {}, \nTeacher ACCURACY = {}\n".format(dataset, np.array2string(np.array(acc), precision=4, separator='\t'), np.array2string(np.array(acc_teacher), precision=4, separator='\t')))   
+                            t_res.append(acc)
+                            t_res_teacher.append(acc_teacher)
+
+                        if dataset == "CheXpert":
+                            test_diseases_name = datasets_config['CheXpert']['test_diseases_name']
+                            test_diseases = [diseases.index(c) for c in test_diseases_name]
+                            y_test = copy.deepcopy(y_test[:,test_diseases])
+                            p_test = copy.deepcopy(p_test[:, test_diseases])
+                            individual_results = metric_AUROC(y_test, p_test, len(test_diseases)) 
+                            y_test_teacher = copy.deepcopy(y_test_teacher[:,test_diseases])
+                            p_test_teacher = copy.deepcopy(p_test_teacher[:, test_diseases])
+                            individual_results_teacher = metric_AUROC(y_test_teacher, p_test_teacher, len(test_diseases)) 
+                        else: 
+                            individual_results = metric_AUROC(y_test, p_test, len(diseases))
+                            individual_results_teacher = metric_AUROC(y_test_teacher, p_test_teacher, len(diseases)) 
+                        print(">>{}:Student AUC = {}, \nTeacher AUC = {}\n".format(dataset, np.array2string(np.array(individual_results), precision=4, separator='\t'),np.array2string(np.array(individual_results_teacher), precision=4, separator='\t')))
+                        writer.write(
+                            "\n{}: Student AUC = {}, \nTeacher AUC = {}\n".format(dataset, np.array2string(np.array(individual_results), precision=4, separator='\t'),np.array2string(np.array(individual_results_teacher), precision=4, separator='\t')))
+                        mean_over_all_classes = np.array(individual_results).mean()
+                        mean_over_all_classes_teacher = np.array(individual_results_teacher).mean()
+                        print(">>{}: Student mAUC = {:.4f}, Teacher mAUC = {:.4f}".format(dataset, mean_over_all_classes,mean_over_all_classes_teacher))
+                        writer.write("{}: Student mAUC = {:.4f}, Teacher mAUC = {:.4f}\n".format(dataset, mean_over_all_classes,mean_over_all_classes_teacher))
+                        t_res.append(mean_over_all_classes)
+                        t_res_teacher.append(mean_over_all_classes_teacher)
+                        
+                    writer.close()
+
+                    test_results.append(t_res)
+                    test_results_teacher.append(t_res_teacher)
+        
+                    print("Omni-pretraining stage: \nStudent meanAUC = \n{} \nTeacher meanAUC = \n{}\n".format(test_results, test_results_teacher))
+            
+            
             for i, data_loader in enumerate(data_loader_list_train): 
                 criterion = torch.nn.CrossEntropyLoss() if datasets_config[dataset_list[i]]['task_type'] == "multi-class classification" else torch.nn.BCEWithLogitsLoss()
                 train_one_epoch(model, i, dataset_list[i], data_loader, device, criterion, optimizer, epoch, args.ema_mode, teacher, momentum_schedule, it)
                 it += 1
             val_loss_list = []
-            for i, dv in enumerate(data_loader_list_val):
+            for i, dv in enumerate(data_loader_list_val[:1]):
                 criterion = torch.nn.CrossEntropyLoss() if datasets_config[dataset_list[i]]['task_type'] == "multi-class classification" else torch.nn.BCEWithLogitsLoss()
                 val_loss = evaluate(model, i, dv, device, criterion, dataset_list[i])
                 val_loss_list.append(val_loss)
@@ -207,7 +260,7 @@ def omni_engine(args, model_path, output_path, dataset_list, datasets_config, da
                     writer.write("Omni-pretraining stage:\n")
                     writer.write("Epoch {:04d}:\n".format(epoch))
                     t_res, t_res_teacher = [],[]
-                    for i, dataset in enumerate(dataset_list):
+                    for i, dataset in enumerate(dataset_list[:1]):
                         writer.write("{} Validation Loss = {:.5f}:\n".format(dataset, val_loss_list[i]))
                         diseases = datasets_config[dataset]['diseases']
                         print(">>{} Disease = {}".format(dataset, diseases))

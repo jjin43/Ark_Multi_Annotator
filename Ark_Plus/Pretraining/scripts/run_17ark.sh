@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=SLURM_17random_VinDrCXR
+#SBATCH --job-name=Finetune_Ark_17Rad_TestAll
 
 #SBATCH -N 1
 #SBATCH -G a100:1
@@ -46,13 +46,31 @@ source activate ark
 # --pretrained_weights https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22kto1k.pth
 
 # Train Ark+ with VinDrCXR subsetted using the same distribution as the 17 radiologist method, but randomly choosen entries. Baseline method.
-~/.conda/envs/ark/bin/python main_ark.py \
---exp_name Ark_17Random_SameDist_VinDr \
+# ~/.conda/envs/ark/bin/python main_ark.py \
+# --exp_name Ark_17Random_SameDist_VinDr \
+# --opt sgd --warmup-epochs 20 --lr 0.3 --workers 8 \
+# --data_set VinDrCXR_random1 --data_set VinDrCXR_random2 --data_set VinDrCXR_random3 --data_set VinDrCXR_random4 --data_set VinDrCXR_random5 --data_set VinDrCXR_random6 --data_set VinDrCXR_random7 --data_set VinDrCXR_random8 --data_set VinDrCXR_random9 --data_set VinDrCXR_random10 --data_set VinDrCXR_random11 --data_set VinDrCXR_random12 --data_set VinDrCXR_random13 --data_set VinDrCXR_random14 --data_set VinDrCXR_random15 --data_set VinDrCXR_random16 --data_set VinDrCXR_random17 \
+# --model swin_base --init imagenet --val_loss_metric average \
+# --img_resize 256 --input_size 224 \
+# --pretrain_epochs 200 --test_epoch 10 --batch_size 100 --momentum_teacher 0.9 \
+# --pretrained_weights https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22kto1k.pth
+
+# Finetune Ark+ with VinDrCXR subsetted to the 17 radiologists ON TOP OF Ark+ initial weight
+# ~/.conda/envs/ark/bin/python main_ark.py \
+# --exp_name Ark_Finetune_17Rad_TestAll \
+# --opt sgd --warmup-epochs 20 --lr 0.3 --workers 8 \
+# --data_set VinDrCXR_rad1 --data_set VinDrCXR_rad2 --data_set VinDrCXR_rad3 --data_set VinDrCXR_rad4 --data_set VinDrCXR_rad5 --data_set VinDrCXR_rad6 --data_set VinDrCXR_rad7 --data_set VinDrCXR_rad8 --data_set VinDrCXR_rad9 --data_set VinDrCXR_rad10 --data_set VinDrCXR_rad11 --data_set VinDrCXR_rad12 --data_set VinDrCXR_rad13 --data_set VinDrCXR_rad14 --data_set VinDrCXR_rad15 --data_set VinDrCXR_rad16 --data_set VinDrCXR_rad17 \
+# --model swin_base --init imagenet --val_loss_metric average \
+# --img_resize 256 --input_size 224 \
+# --pretrain_epochs 200 --test_epoch 1 --batch_size 100 --momentum_teacher 0.9 \
+# --pretrained_weights /data/jliang12/shared/pretrained_models/Ark_models/ark6_swinbase_224_ep200.pth.tar
+
+# Finetune Ark+ with VinDrCXR subsetted to the 17 radiologists ON TOP OF RAD_DINO initial weight
+python main_ark.py \
+--exp_name Ark_17Rad_VinDr \
 --opt sgd --warmup-epochs 20 --lr 0.3 --workers 8 \
---data_set VinDrCXR_random1 --data_set VinDrCXR_random2 --data_set VinDrCXR_random3 --data_set VinDrCXR_random4 --data_set VinDrCXR_random5 --data_set VinDrCXR_random6 --data_set VinDrCXR_random7 --data_set VinDrCXR_random8 --data_set VinDrCXR_random9 --data_set VinDrCXR_random10 --data_set VinDrCXR_random11 --data_set VinDrCXR_random12 --data_set VinDrCXR_random13 --data_set VinDrCXR_random14 --data_set VinDrCXR_random15 --data_set VinDrCXR_random16 --data_set VinDrCXR_random17 \
+--data_set VinDrCXR_rad1 --data_set VinDrCXR_rad2 --data_set VinDrCXR_rad3 --data_set VinDrCXR_rad4 --data_set VinDrCXR_rad5 --data_set VinDrCXR_rad6 --data_set VinDrCXR_rad7 --data_set VinDrCXR_rad8 --data_set VinDrCXR_rad9 --data_set VinDrCXR_rad10 --data_set VinDrCXR_rad11 --data_set VinDrCXR_rad12 --data_set VinDrCXR_rad13 --data_set VinDrCXR_rad14 --data_set VinDrCXR_rad15 --data_set VinDrCXR_rad16 --data_set VinDrCXR_rad17 \
 --model swin_base --init imagenet --val_loss_metric average \
 --img_resize 256 --input_size 224 \
 --pretrain_epochs 200 --test_epoch 10 --batch_size 100 --momentum_teacher 0.9 \
---pretrained_weights https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22kto1k.pth
-
-
+--pretrained_weights /scratch/jjin43/weights/backbone_compatible.safetensors

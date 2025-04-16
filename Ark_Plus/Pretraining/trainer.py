@@ -2,7 +2,7 @@ from utils import MetricLogger, ProgressLogger, save_image, save_snapshot
 import time
 import torch
 from tqdm import tqdm
-import wandb
+# import wandb
 
 def train_one_epoch(model, use_head_n, dataset, data_loader_train, device, criterion, optimizer, epoch, ema_mode, teacher, momentum_schedule, it):
     batch_time = MetricLogger('Time', ':6.3f')

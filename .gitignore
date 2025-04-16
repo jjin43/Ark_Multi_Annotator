@@ -2,4 +2,5 @@ Models/
 Outputs/
 __pycache__/
 SLURM*
-
+*.out
+*.err
